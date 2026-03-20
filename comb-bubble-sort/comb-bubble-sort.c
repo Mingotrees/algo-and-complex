@@ -15,8 +15,8 @@ void combSort(List *);
 
 int main(){
     List org = {{10,9,2,6,4,1,2,3}, 8};
-    bubbleSort(&org);
-    // combSort(&org);
+    // bubbleSort(&org);
+    combSort(&org);
     for(int i = 0; i < org.count; i++){
         printf("%d ", org.data[i]);
     }
@@ -38,9 +38,9 @@ void combSort(List* arr){
         if(gap < 1) gap = 1;
         int j;
         isSwapped = false;
-        for(j = 0; j + gap < arr->count; j++){
-            if(arr->data[j] > arr->data[j+gap]){
-                swap(arr->data + j, arr->data + (j + gap));
+        for(j = gap; j < arr->count; j++){
+            if(arr->data[j-gap] > arr->data[j]){
+                swap(arr->data + j, arr->data + (j - gap));
                 isSwapped = true;
             }
         }
