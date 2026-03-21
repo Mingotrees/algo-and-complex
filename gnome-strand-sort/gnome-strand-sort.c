@@ -12,11 +12,14 @@ void gnomeSort(List*);
 void swap(int*, int*);
 void strandSort(List* arr);
 void merge(List* L1, List* L2);
+void gnomeSort1(List* arr);
+void gnomeSort2(List* arr);
 
 int main(){
     List org = {{10,9,2,6,4,1,2}, 7};
-    // gnomeSort(&org);
-    strandSort(&org);
+    // gnomeSort1(&org);
+    gnomeSort2(&org);
+    // strandSort(&org);
     for(int i = 0; i < org.count; i++){
         printf("%d ", org.data[i]);
     }
@@ -25,11 +28,11 @@ int main(){
 }
 
 void gnomeSort(List* arr){
-    int pos = 0;
+    int pos = 1;
     while(pos < arr->count){
         if(pos == 0 || arr->data[pos] >= arr->data[pos-1]){
             pos++;
-        }else{
+        }else{ 
             int temp = arr->data[pos];
             arr->data[pos] = arr->data[pos-1];
             arr->data[pos-1] = temp;
@@ -38,6 +41,21 @@ void gnomeSort(List* arr){
     }
 }
 
+
+
+void gnomeSort2(List* arr){
+    int ndx;
+    for(ndx = 1; ndx < arr->count;){
+        if(arr->data[ndx] < arr->data[ndx-1]){
+            swap(&arr->data[ndx], &arr->data[ndx-1]);
+            if(ndx > 1){
+                ndx--;
+            }
+        }else{
+            ndx++;
+        }
+    }
+}
 //three parts
 /*
     1. extract strand
