@@ -10,16 +10,19 @@ typedef struct{
 
 void gnomeSort(List*);
 void swap(int*, int*);
-void strandSort(List* arr);
-void merge(List* L1, List* L2);
+void strandSort1(List* arr);
+void merge1(List* L1, List* L2);
 void gnomeSort1(List* arr);
+void strandSort(int* arr, int count);
 void gnomeSort2(List* arr);
+void merge(int* L1, int L1count, int* L2, int *L2count);
 
 int main(){
     List org = {{10,9,2,6,4,1,2}, 7};
     // gnomeSort1(&org);
-    gnomeSort2(&org);
+    // gnomeSort2(&org);
     // strandSort(&org);
+    strandSort(org.data, 7);
     for(int i = 0; i < org.count; i++){
         printf("%d ", org.data[i]);
     }
@@ -62,7 +65,7 @@ void gnomeSort2(List* arr){
     2. merge strand and out arr
     3. repeat until org arr count == 0
 */
-void strandSort(List* arr){
+void strandSort1(List* arr){
     List out = {.count = 0};
     List strand = {.count = 0};
 
@@ -80,13 +83,13 @@ void strandSort(List* arr){
             }
         }
         arr->count = write;
-        merge(&out, &strand);
+        merge1(&out, &strand);
     }
     memcpy(arr->data, out.data, sizeof(int)*(out.count));
     arr->count = out.count;
 }
 
-void merge(List* L1, List* L2){
+void merge1(List* L1, List* L2){
     int temp[MAX];
     int i = 0, j = 0, k = 0;
 
@@ -110,4 +113,47 @@ void swap(int* x, int*y){
     int temp = *x;
     *x = *y;
     *y = temp;
+}
+
+void strandSort(int* arr, int count){
+    int newCount, sCount, oCount = 0;
+    int* strand = (int*)malloc(sizeof(int)*MAX);
+    int* output = (int*)malloc(sizeof(int)*MAX);
+    while(count > 0){
+        newCount = 0;
+        sCount = 0;
+        int largest = arr[0];
+        strand[sCount++] = largest;
+        for(int i = 1; i < count; i++){
+            if(arr[i] > largest){
+                strand[sCount++] = arr[i];
+                largest = arr[i];
+            }else{
+                arr[newCount++] = arr[i];
+            }
+        }
+        count = newCount;
+        merge(strand, sCount, output, &oCount);
+    }
+    memcpy(arr, output, sizeof(int)*oCount);
+    free(strand);
+    free(output);
+}
+
+void merge(int* L1, int L1count, int* L2, int *L2count){
+    int mergeAr[MAX];
+    int mergeCount = 0;
+    int i = 0, j = 0;
+    while(i < L1count && j < *L2count){
+        if(L1[i] < L2[j]){
+            mergeAr[mergeCount++] = L1[i++];
+        }else{
+            mergeAr[mergeCount++] = L2[j++];
+        }
+    }
+
+    while(i < L1count) { mergeAr[mergeCount++] = L1[i++];};
+    while(j < *L2count) { mergeAr[mergeCount++] = L2[j++];};
+    memcpy(L2, mergeAr, sizeof(int)*mergeCount);
+    *L2count = mergeCount;
 }
