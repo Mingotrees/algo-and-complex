@@ -8,6 +8,17 @@ typedef struct{
     int count;
 }List;
 
+typedef struct node{
+    int data;
+    struct node* next;
+}*LinkedList;
+
+typedef struct{
+    LinkedList head;
+    LinkedList tail;
+}StackLList;
+
+LinkedList convertToLinkedList(int* arr, int count);
 void gnomeSort(List*);
 void swap(int*, int*);
 void strandSort1(List* arr);
@@ -59,6 +70,23 @@ void gnomeSort2(List* arr){
         }
     }
 }
+
+LinkedList convertToLinkedList(int* arr, int count){
+    LinkedList list = NULL;
+    LinkedList* listPtr = &list;
+    for(int i = 0; i < count; i++){
+        LinkedList temp = (LinkedList)malloc(sizeof(struct node)); 
+        if(temp != NULL){
+            temp->data = arr[i];
+            *listPtr = temp;
+            listPtr = &(*listPtr)->next;
+        }
+    } 
+    *listPtr = NULL;
+
+    return list;
+}
+
 //three parts
 /*
     1. extract strand
