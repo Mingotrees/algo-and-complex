@@ -20,37 +20,47 @@ int main(){
 }
 
 void offlineTournamentSort(ArrayList *temp){
-    if(temp->count > 0){
-        int size = temp->count*2-1;
-        int* arr = (int*)calloc(size, sizeof(int));
-        
-        //load players
-        for(int i = temp->count - 1, j = size - 1; i >= 0; i--, j--){
-            arr[j] = temp->arr[i];
-            // printf("[%d]: %d", j, arr[j]);
-        }
+    if(temp->count <= 0){
+        return;
+    }
 
-        temp->count = 0;
-        int ndx = size - 1;
-        int parent = (ndx-1)/2;
-        while(arr[0] != INF){
-            //duel logic
-            for(;parent >= 0 ;parent = (ndx-1)/2){
-                //winner
-                if(ndx%2 == 0){
-                    arr[parent] = arr[ndx] < arr[ndx-1] ? ndx :  ndx-1;
-                    ndx -=2; 
-                }else{
-                    arr[parent] = arr[ndx] < arr[ndx+1] ? ndx :  ndx+1; 
-                    ndx -=1;
-                }
-            }
+    int n = temp->count;
+    int size = (2 * n) - 1;
+    int leafStart = n - 1;
+    int values[MAX];
+    int tree[(2 * MAX) - 1];
 
-            ndx = arr[parent];
-            temp->arr[temp->count++] = arr[parent];
-            arr[parent] = INF;
-            parent = (ndx-1)/2;
+    for(int i = 0; i < n; i++){
+        values[i] = temp->arr[i];
+    }
+
+    // Leaves store source indices. Internal nodes also store winner indices.
+    for(int i = 0; i < n; i++){
+        tree[leafStart + i] = i;
+    }
+
+    for(int i = leafStart - 1; i >= 0; i--){
+        int left = tree[(2 * i) + 1];
+        int right = tree[(2 * i) + 2];
+        tree[i] = (values[left] <= values[right]) ? left : right;
+    }
+
+    temp->count = 0;
+
+    while(values[tree[0]] != INF){
+        int winnerIndex = tree[0];
+        temp->arr[temp->count++] = values[winnerIndex];
+        values[winnerIndex] = INF;
+
+        int node = leafStart + winnerIndex;
+        tree[node] = winnerIndex;
+
+        while(node > 0){
+            int parent = (node - 1) / 2;
+            int left = tree[(2 * parent) + 1];
+            int right = tree[(2 * parent) + 2];
+            tree[parent] = (values[left] <= values[right]) ? left : right;
+            node = parent;
         }
-        free(arr);
     }
 }

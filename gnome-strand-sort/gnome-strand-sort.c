@@ -13,10 +13,11 @@ typedef struct node{
     struct node* next;
 }*LinkedList;
 
-typedef struct{
-    LinkedList head;
-    LinkedList tail;
-}StackLList;
+//discontinued
+// typedef struct{
+//     LinkedList head;
+//     LinkedList tail;
+// }StackLList;
 
 LinkedList convertToLinkedList(int* arr, int count);
 void gnomeSort(List*);
@@ -71,21 +72,22 @@ void gnomeSort2(List* arr){
     }
 }
 
-LinkedList convertToLinkedList(int* arr, int count){
-    LinkedList list = NULL;
-    LinkedList* listPtr = &list;
-    for(int i = 0; i < count; i++){
-        LinkedList temp = (LinkedList)malloc(sizeof(struct node)); 
-        if(temp != NULL){
-            temp->data = arr[i];
-            *listPtr = temp;
-            listPtr = &(*listPtr)->next;
-        }
-    } 
-    *listPtr = NULL;
+//discontinued
+// LinkedList convertToLinkedList(int* arr, int count){
+//     LinkedList list = NULL;
+//     LinkedList* listPtr = &list;
+//     for(int i = 0; i < count; i++){
+//         LinkedList temp = (LinkedList)malloc(sizeof(struct node)); 
+//         if(temp != NULL){
+//             temp->data = arr[i];
+//             *listPtr = temp;
+//             listPtr = &(*listPtr)->next;
+//         }
+//     } 
+//     *listPtr = NULL;
 
-    return list;
-}
+//     return list;
+// }
 
 //three parts
 /*
