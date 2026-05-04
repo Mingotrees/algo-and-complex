@@ -146,8 +146,8 @@ static int partitionNaive(int arr[], int low, int high) {
 		}
 	}
 
-	for (int i = low; i <= high; i++) {
-		arr[i] = temp[i];
+	for (int i = 0; i < high; i++) {
+		arr[low+i] = temp[i];
 	}
 
 	return pivotIndex;
